@@ -1,11 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import s from "./ContactList.module.css";
 import { removeContact } from "../../redux/contacts/contacts-actions";
+import { getContacts } from "../../redux/contacts/contacts-operations";
 
 export default function ContactList() {
-  const contacts = useSelector((state) => state.contacts);
+  const contacts = useSelector((state) => state.contacts.entities);
   const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
+
+  useEffect(() => dispatch(getContacts()), [dispatch]);
 
   function getVisibleContacts() {
     const normalizedFilter = filter.toLowerCase();
@@ -25,7 +29,6 @@ export default function ContactList() {
             <button
               className={s.btn}
               type="button"
-              // onClick={() => onRemoveContact(id)}
               onClick={() => dispatch(removeContact(id))}
             >
               Remove
@@ -35,16 +38,3 @@ export default function ContactList() {
     </ul>
   );
 }
-
-// const mapStateToProps = (state) => ({
-//   contacts: state.contacts,
-//   filter: state.filter,
-// });
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onRemoveContact: (id) => dispatch(removeContact(id)),
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

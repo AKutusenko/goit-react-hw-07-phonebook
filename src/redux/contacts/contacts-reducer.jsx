@@ -1,35 +1,42 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { addContact, removeContact } from "./contacts-actions";
-// import { ADD_CONTACT, REMOVE_CONTACT } from "../action-types";
+import { createReducer, combineReducers } from "@reduxjs/toolkit";
+// import { addContact, removeContact } from "./contacts-actions";
+import {
+  axiosContactsRequest,
+  axiosContactsSuccess,
+  axiosContactsError,
+} from "./contacts-actions";
 
-// export const contactsReducer = (state = [], { type, payload }) => {
-//   switch (type) {
-//     case ADD_CONTACT:
-//       let duplicate = state.find((contact) => contact.name === payload.name);
-//       if (duplicate) {
-//         alert("Такой контакт уже существует!");
-//         return state;
-//       } else {
-//         return [...state, payload];
-//       }
-//     case REMOVE_CONTACT:
-//       return state.filter((contact) => contact.id !== payload);
-
-//     default:
+// export const contactsReducer = createReducer([], {
+//   [addContact]: (state, { payload }) => {
+//     let duplicate = state.find((contact) => contact.name === payload.name);
+//     if (duplicate) {
+//       alert("Такой контакт уже существует!");
 //       return state;
-//   }
-// };
+//     } else {
+//       return [...state, payload];
+//     }
+//   },
+//   [removeContact]: (state, { payload }) =>
+//     state.filter((contact) => contact.id !== payload),
+// });
 
-export const contactsReducer = createReducer([], {
-  [addContact]: (state, { payload }) => {
-    let duplicate = state.find((contact) => contact.name === payload.name);
-    if (duplicate) {
-      alert("Такой контакт уже существует!");
-      return state;
-    } else {
-      return [...state, payload];
-    }
-  },
-  [removeContact]: (state, { payload }) =>
-    state.filter((contact) => contact.id !== payload),
+const entities = createReducer([], {
+  [axiosContactsSuccess]: (state, action) => action.payload,
+});
+
+const isLoading = createReducer(false, {
+  [axiosContactsRequest]: () => true,
+  [axiosContactsSuccess]: () => false,
+  [axiosContactsError]: () => false,
+});
+
+const error = createReducer(null, {
+  [axiosContactsError]: (state, action) => action.payload,
+  [axiosContactsRequest]: () => null,
+});
+
+export default combineReducers({
+  entities,
+  error,
+  isLoading,
 });

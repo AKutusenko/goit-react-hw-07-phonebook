@@ -22,13 +22,3 @@ export default function Filter() {
     </label>
   );
 }
-
-// const mapStateToProps = (state) => ({
-//   value: state.filter,
-// });
-
-// const mapDispatchToProps = (dispatch) => ({
-//   onChange: (e) => dispatch(filter(e.currentTarget.value)),
-// });
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Filter);
