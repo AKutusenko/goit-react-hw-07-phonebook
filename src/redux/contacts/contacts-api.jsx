@@ -1,39 +1,24 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3001/contacts";
+axios.defaults.baseURL = "http://localhost:3001";
 
-export async function getContactsFromDb() {
-  try {
-    const { data } = await axios.get();
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// export async function setContactsToDb(data) {
+// export async function getContactsFromDb() {
 //   try {
-//     console.log("object");
-//     await axios.post(data);
+//     const { data } = await axios.get();
+//     return data;
 //   } catch (error) {
 //     console.error(error);
 //   }
 // }
 
-axios
-  .post("/user", {
-    firstName: "Fred",
-    lastName: "Flintstone",
-  })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+export const fetchContacts = () => {
+  return axios.get("/contacts").then((response) => response.data);
+};
 
-setContactsToDb({
-  name: "New Lox",
-  number: "123-321",
-  id: 2,
-});
+export const addContact = (contact) => {
+  return axios.post("contacts", contact).then(({ data }) => data);
+};
+
+export const deleteContact = (contactId) => {
+  return axios.delete(`/contacts/${contactId}`);
+};

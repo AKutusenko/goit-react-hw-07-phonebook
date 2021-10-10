@@ -1,10 +1,6 @@
-import { createReducer, combineReducers } from "@reduxjs/toolkit";
-// import { addContact, removeContact } from "./contacts-actions";
-import {
-  axiosContactsRequest,
-  axiosContactsSuccess,
-  axiosContactsError,
-} from "./contacts-actions";
+import { createSlice } from "@reduxjs/toolkit";
+import { getContacts, addContact } from "../contacts/contacts-operations";
+// import { removeContact } from "./contacts-actions";
 
 // export const contactsReducer = createReducer([], {
 //   [addContact]: (state, { payload }) => {
@@ -20,23 +16,58 @@ import {
 //     state.filter((contact) => contact.id !== payload),
 // });
 
-const entities = createReducer([], {
-  [axiosContactsSuccess]: (state, action) => action.payload,
+// const entities = createReducer([], {
+//   [getContacts.fulfilled]: (_, action) => action.payload,
+// });
+
+// const isLoading = createReducer(false, {
+//   [getContacts.pending]: () => true,
+//   [getContacts.fulfilled]: () => false,
+//   [getContacts.rejected]: () => false,
+// });
+
+// const error = createReducer(null, {
+//   [getContacts.rejected]: (_, action) => action.payload,
+//   [getContacts.pending]: () => null,
+// });
+
+// combineReducers({
+//   entities,
+//   isLoading,
+//   error,
+// });
+
+//can use IMMER to mutate a copy of a state
+const contactsSlice = createSlice({
+  name: "contacts",
+  initialState: { entities: [], isLoading: false, error: null },
+  extraReducers: {
+    [addContact.fulfilled]: (state, action) => ({
+      ...state,
+      entities: [...state.entities, action.payload],
+    }),
+    [addContact.pending]: (state) => ({
+      ...state,
+      isLoading: true,
+    }),
+    [addContact.rejected]: (state) => ({
+      ...state,
+      isLoading: false,
+    }),
+    [getContacts.fulfilled]: (state, action) => ({
+      ...state,
+      entities: action.payload,
+      isLoading: false,
+    }),
+    [getContacts.pending]: (state) => ({
+      ...state,
+      isLoading: true,
+    }),
+    [getContacts.rejected]: (state) => ({
+      ...state,
+      isLoading: false,
+    }),
+  },
 });
 
-const isLoading = createReducer(false, {
-  [axiosContactsRequest]: () => true,
-  [axiosContactsSuccess]: () => false,
-  [axiosContactsError]: () => false,
-});
-
-const error = createReducer(null, {
-  [axiosContactsError]: (state, action) => action.payload,
-  [axiosContactsRequest]: () => null,
-});
-
-export default combineReducers({
-  entities,
-  error,
-  isLoading,
-});
+export default contactsSlice.reducer;
