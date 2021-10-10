@@ -10,16 +10,30 @@ export async function getContactsFromDb() {
     console.error(error);
   }
 }
-// export async function setContactsFromDb(data) {
+
+// export async function setContactsToDb(data) {
 //   try {
+//     console.log("object");
 //     await axios.post(data);
 //   } catch (error) {
 //     console.error(error);
 //   }
 // }
 
-// setContactsFromDb({
-//   name: "Homer",
-//   number: "123-321",
-//   id: 2,
-// });
+axios
+  .post("/user", {
+    firstName: "Fred",
+    lastName: "Flintstone",
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+setContactsToDb({
+  name: "New Lox",
+  number: "123-321",
+  id: 2,
+});
