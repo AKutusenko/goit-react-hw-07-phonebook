@@ -15,10 +15,11 @@ import shortid from "shortid";
 export const addContact = createAsyncThunk(
   "contacts/addContact",
   (name, number) => ({
-    payload: { name, number, id: shortid.generate() },
+    name,
+    number,
   }),
-  async (payload) => {
-    const contacts = await jsonServerApi.addContact(payload);
+  async () => {
+    const contacts = await jsonServerApi.addContact();
     return contacts;
   }
 );
