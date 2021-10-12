@@ -1,16 +1,23 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import s from "./ContactList.module.css";
-import { removeContact } from "../../redux/contacts/contacts-actions";
-import { getContacts } from "../../redux/contacts/contacts-operations";
-import { getContactsFromState } from "../../redux/contacts/contacts-selectors";
+import {
+  getContacts,
+  removeContact,
+} from "../../redux/contacts/contacts-operations";
+import {
+  getContactsFromState,
+  getFilterFromState,
+} from "../../redux/contacts/contacts-selectors";
 
 export default function ContactList() {
   const contacts = useSelector(getContactsFromState);
-  const filter = useSelector((state) => state.filter);
+  const filter = useSelector(getFilterFromState);
   const dispatch = useDispatch();
 
-  useEffect(() => dispatch(getContacts()), [dispatch]);
+  useEffect(() => {
+    dispatch(getContacts());
+  }, [dispatch]);
 
   function getVisibleContacts() {
     const normalizedFilter = filter.toLowerCase();

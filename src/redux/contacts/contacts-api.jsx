@@ -16,7 +16,7 @@ export const fetchContacts = () => {
 };
 
 export const addContact = (contact) => {
-  return axios.post("contacts", contact).then(({ data }) => data);
+  return axios.post("/contacts", contact).then(({ data }) => data);
 };
 
 export const deleteContact = (contactId) => {
